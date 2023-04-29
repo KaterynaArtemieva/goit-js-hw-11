@@ -3,7 +3,6 @@ import Notiflix from 'notiflix';
 import { fetchImages } from './fetchImages';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-
 const form = document.querySelector('.search-form');
 const gallery = document.querySelector('.gallery');
 const target = document.querySelector('.guard');
@@ -14,8 +13,8 @@ let options = {
   rootMargin: '300px',
   threshold: 1.0,
 };
+let instance = null;
 form.addEventListener('submit', onFormSubmit);
-
 function onFormSubmit(evt) {
   evt.preventDefault();
   gallery.innerHTML = '';
@@ -32,7 +31,11 @@ function onFormSubmit(evt) {
           Notiflix.Notify.success(`Hooray! We found ${data.total} images.`);
           let observer = new IntersectionObserver(onLoad, options);
           observer.observe(target);
-          
+          if (instance) {
+            instance.refresh();
+          } else {
+            instance = new SimpleLightbox('.gallery a');
+          }
         } else {
           Notiflix.Notify.failure(
             'Sorry, there are no images matching your search query. Please try again.'
@@ -46,9 +49,8 @@ function onFormSubmit(evt) {
       .catch(err);
   }
 }
-
 function onLoad(entries, observer, searchImg) {
-    entries.forEach(entry => {
+  entries.forEach(entry => {
     if (entry.isIntersecting) {
       currentPage += 1;
       const {
@@ -61,7 +63,6 @@ function onLoad(entries, observer, searchImg) {
           const { height: cardHeight } = document
             .querySelector('.gallery')
             .firstElementChild.getBoundingClientRect();
-
           window.scrollBy({
             top: cardHeight * 2,
             behavior: 'smooth',
@@ -78,7 +79,6 @@ function onLoad(entries, observer, searchImg) {
     }
   });
 }
-
 function createMarkup(data) {
   let arr = data.hits;
   return arr
@@ -113,7 +113,6 @@ function createMarkup(data) {
     )
     .join('');
 }
-
 function err(error) {
   Notiflix.Notify.failure(`${error.message}`);
 }
