@@ -57,25 +57,28 @@ function onLoad(entries, observer, searchImg) {
         elements: { searchQuery },
       } = form;
       searchImg = searchQuery.value.trim();
-      fetchImages(searchImg, currentPage)
-        .then(data => {
-          gallery.insertAdjacentHTML('beforeend', createMarkup(data));
-          const { height: cardHeight } = document
-            .querySelector('.gallery')
-            .firstElementChild.getBoundingClientRect();
-          window.scrollBy({
-            top: cardHeight * 2,
-            behavior: 'smooth',
-          });
-          let totalPageImg = 40 * currentPage;
-          if (totalPageImg >= data.total) {
-            observer.unobserve(target);
-            Notiflix.Notify.info(
-              "We're sorry, but you've reached the end of search results."
-            );
-          }
-        })
-        .catch(err => console.log(err));
+      if (searchImg) {
+        console.log(searchImg);
+        fetchImages(searchImg, currentPage)
+          .then(data => {
+            gallery.insertAdjacentHTML('beforeend', createMarkup(data));
+            const { height: cardHeight } = document
+              .querySelector('.gallery')
+              .firstElementChild.getBoundingClientRect();
+            window.scrollBy({
+              top: cardHeight * 2,
+              behavior: 'smooth',
+            });
+            let totalPageImg = 40 * currentPage;
+            if (totalPageImg >= data.total) {
+              observer.unobserve(target);
+              Notiflix.Notify.info(
+                "We're sorry, but you've reached the end of search results."
+              );
+            }
+          })
+          .catch(err => console.log(err));
+      }
     }
   });
 }
