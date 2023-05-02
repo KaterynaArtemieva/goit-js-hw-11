@@ -28,15 +28,11 @@ export function onFormSubmit(evt) {
   } = evt.currentTarget;
   searchImg = searchQuery.value.trim();
   currentPage = 1;
+  instance = null;
   if (observer) {
     observer.unobserve(target);
   }
-  if (instance) {
-    instance.refresh();
-  } else {
-    instance = new SimpleLightbox('.gallery a');
-  }
-  if (searchImg) {
+    if (searchImg) {
     fetchImages(searchImg, currentPage)
       .then(data => {
         if (data.total) {
