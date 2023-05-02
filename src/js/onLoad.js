@@ -15,7 +15,7 @@ export function onLoad(entries, observer, searchImg) {
       const {
         elements: { searchQuery },
       } = form;
-      instance = null;
+      let instance = null;
       searchImg = searchQuery.value.trim();
       currentPage += 1;
       fetchImages(searchImg, currentPage)
