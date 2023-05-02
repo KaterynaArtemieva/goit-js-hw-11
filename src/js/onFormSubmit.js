@@ -31,6 +31,11 @@ export function onFormSubmit(evt) {
   if (observer) {
     observer.unobserve(target);
   }
+  if (instance) {
+    instance.refresh();
+  } else {
+    instance = new SimpleLightbox('.gallery a');
+  }
   if (searchImg) {
     fetchImages(searchImg, currentPage)
       .then(data => {
