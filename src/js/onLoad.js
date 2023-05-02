@@ -8,6 +8,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const gallery = document.querySelector('.gallery');
 const target = document.querySelector('.guard');
 const form = document.querySelector('.search-form');
+let currentPage = 1;
 
 export function onLoad(entries, observer, searchImg) {
   entries.forEach(entry => {
