@@ -4,21 +4,22 @@ import { createMarkup } from './createMarkup';
 import { err } from './err';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import { currentPage } from './onFormSubmit';
 
 const gallery = document.querySelector('.gallery');
 const target = document.querySelector('.guard');
 const form = document.querySelector('.search-form');
-let currentPage = 1;
 
 export function onLoad(entries, observer, searchImg) {
+
   entries.forEach(entry => {
     if (entry.isIntersecting) {
+        currentPage = currentPage + 1;
       const {
         elements: { searchQuery },
       } = form;
       let instance = null;
       searchImg = searchQuery.value.trim();
-      currentPage += 1;
       fetchImages(searchImg, currentPage)
         .then(data => {
           gallery.insertAdjacentHTML('beforeend', createMarkup(data));

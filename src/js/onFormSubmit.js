@@ -17,11 +17,11 @@ let options = {
 };
 let instance = null;
 const form = document.querySelector('.search-form');
+export let currentPage = 1;
 
 export function onFormSubmit(evt) {
   evt.preventDefault();
   gallery.innerHTML = '';
-  let currentPage = 1;
   const {
     elements: { searchQuery },
   } = evt.currentTarget;
