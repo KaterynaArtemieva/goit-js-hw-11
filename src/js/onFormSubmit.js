@@ -21,7 +21,7 @@ const form = document.querySelector('.search-form');
 export function onFormSubmit(evt) {
   evt.preventDefault();
   gallery.innerHTML = '';
-  currentPage = 1;
+  let currentPage = 1;
   const {
     elements: { searchQuery },
   } = evt.currentTarget;
