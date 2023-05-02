@@ -7,8 +7,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const gallery = document.querySelector('.gallery');
 const target = document.querySelector('.guard');
-currentPage = 1;
-instance = null;
 const form = document.querySelector('.search-form');
 
 export function onLoad(entries, observer, searchImg) {
@@ -17,6 +15,7 @@ export function onLoad(entries, observer, searchImg) {
       const {
         elements: { searchQuery },
       } = form;
+      instance = null;
       searchImg = searchQuery.value.trim();
       currentPage += 1;
       fetchImages(searchImg, currentPage)
