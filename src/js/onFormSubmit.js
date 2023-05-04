@@ -17,7 +17,7 @@ let options = {
   rootMargin: '300px',
   threshold: 1.0,
 };
-let instance = null;
+const instance = new SimpleLightbox('.gallery a');
 let currentPage = 1;
 
 export function onFormSubmit(evt) {
@@ -28,22 +28,19 @@ export function onFormSubmit(evt) {
   } = evt.currentTarget;
   searchImg = searchQuery.value.trim();
   currentPage = 1;
-  instance = null;
   if (observer) {
     observer.unobserve(target);
   }
-    if (searchImg) {
+  if (searchImg) {
     fetchImages(searchImg, currentPage)
       .then(data => {
         if (data.total) {
           gallery.insertAdjacentHTML('beforeend', createMarkup(data));
           Notiflix.Notify.success(`Hooray! We found ${data.total} images.`);
-          observer = new IntersectionObserver(onLoad, options);
-          observer.observe(target);
-          if (instance) {
+          if (data.total > 40) {
+            observer = new IntersectionObserver(onLoad, options);
+            observer.observe(target);
             instance.refresh();
-          } else {
-            instance = new SimpleLightbox('.gallery a');
           }
         } else {
           Notiflix.Notify.failure(
@@ -65,17 +62,12 @@ function onLoad(entries, observer, searchImg) {
       const {
         elements: { searchQuery },
       } = form;
-      let instance = null;
       searchImg = searchQuery.value.trim();
       currentPage += 1;
       fetchImages(searchImg, currentPage)
         .then(data => {
           gallery.insertAdjacentHTML('beforeend', createMarkup(data));
-          if (instance) {
-            instance.refresh();
-          } else {
-            instance = new SimpleLightbox('.gallery a');
-          }
+          instance.refresh();
           const { height: cardHeight } = document
             .querySelector('.gallery')
             .firstElementChild.getBoundingClientRect();
